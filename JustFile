@@ -1,0 +1,28 @@
+set dotenv-load
+UDL_FILE := "src/math.udl"
+BINDINGS_DIR_PY := "bindings/python"
+BINDINGS_DIR_CS := "bindings/csharp"
+CRATE_NAME := "bytes_intense"
+BUILD_DYLIB := "target/release/bytes_intense.dll"
+build:
+    @echo "Building Rust project..."
+    cargo build --release
+    @echo "Project built."
+
+csharp: build 
+    @echo "Generating C# bindings..."
+    uniffi-bindgen-cs --library {{BUILD_DYLIB}} --out-dir {{BINDINGS_DIR_CS}}
+    @echo "Bindings generated in {{BINDINGS_DIR_CS}}."
+
+# Default recipe to build the project and generate bindings
+python: build
+    @echo "Generating Python bindings..."
+    cargo run --bin uniffi-bindgen generate --language python --out-dir {{BINDINGS_DIR_PY}} --library {{BUILD_DYLIB}}
+    @echo "Bindings generated in {{BINDINGS_DIR_PY}}."
+
+# Recipe to clean generated files
+clean:
+    @echo "Cleaning up..."
+    cargo clean
+    rm -rf $(BINDINGS_DIR)
+    @echo "Cleaned."
