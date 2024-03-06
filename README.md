@@ -15,7 +15,7 @@ cd dotnet-experiment;just csharp;dotnet run
 
 ### Result
 
-unffi does not support passing reference across FFI, all reference are simply a copy.
+uniffi does not support passing reference across FFI, all reference are simply a copy.
 
  1. Taking a byte slice from C# (good)
 
